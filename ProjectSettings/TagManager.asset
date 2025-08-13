@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Gameplay
+  - Destructable
+  - Enemy
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - Player
+  - Water
+  - UI
+  - Solidos
+  - Enemigos
+  - Trigger Zone
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Walls
+    uniqueID: 1911164713
+    locked: 0
+  - name: Floors
+    uniqueID: 2444476517
+    locked: 0
+  - name: Bordes
+    uniqueID: 578270163
+    locked: 0
+  - name: Glow
+    uniqueID: 581246667
+    locked: 0
+  - name: Decorations
+    uniqueID: 4182145823
+    locked: 0
+  - name: Player
+    uniqueID: 1749099357
+    locked: 0
+  - name: Over Player
+    uniqueID: 2549785505
+    locked: 0
