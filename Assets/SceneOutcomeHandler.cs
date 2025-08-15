@@ -6,21 +6,47 @@ public class SceneOutcomeHandler : MonoBehaviour
 {
     [SerializeField] private GameObject welcomePanel;
 
+
+    [SerializeField] public AudioClip musicaVictoriaClip;
+    [SerializeField] public AudioClip musicaGameOverClip;
+
+    private AudioSource musicaSource;
+
     void Start()
     {
+        musicaSource = gameObject.AddComponent<AudioSource>();
+        musicaSource.playOnAwake = false;
+
+
         if (GameManager.Instance == null) return;
 
         if (GameManager.Instance.gameFailed)
         {
             GameManager.Instance.GameOverPanel?.SetActive(true);
             Debug.Log("fin del juego");
-            HideWelcomePanel(); 
+            HideWelcomePanel();
+
+            if (musicaGameOverClip != null)
+            {
+                musicaSource.clip = musicaGameOverClip;
+                musicaSource.Play();
+            }
+
+
         }
+
         else if (GameManager.Instance.gameWon && GameManager.Instance.bookPickedUp)
         {
             GameManager.Instance.VictoryPanel?.SetActive(true);
             DisableEnemies();
-            HideWelcomePanel(); 
+            HideWelcomePanel();
+
+            if (musicaVictoriaClip != null)
+            {
+                musicaSource.clip = musicaVictoriaClip;
+                musicaSource.Play();
+            }
+
         }
     }
 

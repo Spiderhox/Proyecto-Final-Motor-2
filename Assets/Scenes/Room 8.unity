@@ -3059,6 +3059,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1691adb2e3b2d404583bbe802dcbcd9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  muerteJugadorClip: {fileID: 8300000, guid: 81e44dc067b4ba146b81d1a39bfe41de, type: 3}
 --- !u!114 &842083762
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3465,9 +3466,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.1915158}
+  m_Offset: {x: 0, y: 0.4507914}
   serializedVersion: 2
-  m_Radius: 1.0195659
+  m_Radius: 1.2788415
 --- !u!4 &1146016260
 Transform:
   m_ObjectHideFlags: 0
@@ -3477,7 +3478,7 @@ Transform:
   m_GameObject: {fileID: 1146016258}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.04, y: 1.14, z: 0.016215477}
+  m_LocalPosition: {x: 6.04, y: 1.48, z: 0.016215477}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4776,7 +4777,7 @@ Transform:
   m_GameObject: {fileID: 2077166035}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.08, y: 1.14, z: -0.021910919}
+  m_LocalPosition: {x: 6.08, y: 2.49, z: -0.021910919}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

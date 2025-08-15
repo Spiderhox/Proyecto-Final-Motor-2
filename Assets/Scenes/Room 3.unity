@@ -227,6 +227,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1691adb2e3b2d404583bbe802dcbcd9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  muerteJugadorClip: {fileID: 0}
 --- !u!114 &40386499
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4782,6 +4783,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Untagged
       objectReference: {fileID: 0}
+    - target: {fileID: 6214403508702080520, guid: 19b12e61a5bd572439e28e52ca77d8e1, type: 3}
+      propertyPath: muerteJugadorClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 81e44dc067b4ba146b81d1a39bfe41de, type: 3}
     - target: {fileID: 7827224562165666862, guid: 19b12e61a5bd572439e28e52ca77d8e1, type: 3}
       propertyPath: velocidad
       value: 6

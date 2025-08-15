@@ -8,6 +8,10 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public AudioClip hojaRecogidaClip;
+    public AudioClip libroRecogidoClip;
+    private AudioSource audioSource;
+
     public Transform spawnPoint;
     public GameObject PlayerCharacter;
     public static GameManager Instance;
@@ -83,6 +87,12 @@ public class GameManager : MonoBehaviour
         totalCollected += value;
         UpdateUI();
 
+        if (hojaRecogidaClip != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(hojaRecogidaClip);
+        }
+
+
     }
 
     private void UpdateUI()
@@ -97,11 +107,13 @@ public class GameManager : MonoBehaviour
         Debug.Log("GameManager Awake in scene: " + SceneManager.GetActiveScene().name);
 
 
-
         if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            audioSource = gameObject.AddComponent<AudioSource>();
+            audioSource.playOnAwake = false;
+
 
             if (currentCanvas == null)
             {
@@ -278,6 +290,11 @@ public class GameManager : MonoBehaviour
             bookPopupPanel.SetActive(true);
 
         bookPickedUp = true;
+
+        if (libroRecogidoClip != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(libroRecogidoClip);
+        }
 
         if (CanPickUpBook())
         {

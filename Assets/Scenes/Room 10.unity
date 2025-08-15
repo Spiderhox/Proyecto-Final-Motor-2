@@ -4554,6 +4554,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1691adb2e3b2d404583bbe802dcbcd9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  muerteJugadorClip: {fileID: 8300000, guid: 81e44dc067b4ba146b81d1a39bfe41de, type: 3}
 --- !u!50 &2110693485
 Rigidbody2D:
   serializedVersion: 4
@@ -4643,7 +4644,7 @@ MonoBehaviour:
   - {fileID: 1096426937}
   - {fileID: 955107864}
   - {fileID: 296835586}
-  velocidad: 15
+  velocidad: 13
 --- !u!95 &2110693488
 Animator:
   serializedVersion: 5

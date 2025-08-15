@@ -1221,6 +1221,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1691adb2e3b2d404583bbe802dcbcd9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  muerteJugadorClip: {fileID: 8300000, guid: 81e44dc067b4ba146b81d1a39bfe41de, type: 3}
 --- !u!50 &720903400
 Rigidbody2D:
   serializedVersion: 4
@@ -4060,6 +4061,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1691adb2e3b2d404583bbe802dcbcd9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  muerteJugadorClip: {fileID: 8300000, guid: 81e44dc067b4ba146b81d1a39bfe41de, type: 3}
 --- !u!114 &1229438949
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4635,6 +4637,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1691adb2e3b2d404583bbe802dcbcd9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  muerteJugadorClip: {fileID: 8300000, guid: 81e44dc067b4ba146b81d1a39bfe41de, type: 3}
 --- !u!114 &1469364361
 MonoBehaviour:
   m_ObjectHideFlags: 0
