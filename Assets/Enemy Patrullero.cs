@@ -39,7 +39,7 @@ public class EnemyPatrol : MonoBehaviour
                 }
 
             // Wait before moving to next point
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.5f);
 
             // Update the patrol index based on direction
             //en vez de siempre incrementar el indice de direccion, se samcia entre ++ y --

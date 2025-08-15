@@ -4643,7 +4643,7 @@ MonoBehaviour:
   - {fileID: 1096426937}
   - {fileID: 955107864}
   - {fileID: 296835586}
-  velocidad: 12
+  velocidad: 15
 --- !u!95 &2110693488
 Animator:
   serializedVersion: 5

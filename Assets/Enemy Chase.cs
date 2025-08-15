@@ -47,10 +47,17 @@ public class EnemyChase : MonoBehaviour
         while (estado == EstadoEnemigo.PATRULLANDO)
         {
             Vector3 destino = puntosPatrulla[indicePuntoActual].position;
-            while (Vector3.Distance(transform.position, destino) > 0.1f && estado == EstadoEnemigo.PATRULLANDO)
+            while (Vector3.Distance(rb.position, destino) > 0.1f && estado == EstadoEnemigo.PATRULLANDO)
             {
-                transform.position = Vector2.MoveTowards(transform.position, destino, velocidad * Time.deltaTime);
+
+                Vector2 nuevaPos = Vector2.MoveTowards(rb.position, destino, velocidad * Time.deltaTime);
+                if (!HayObstaculoEnCamino(nuevaPos))
+                {
+                    rb.MovePosition(nuevaPos);
+                }
                 yield return null;
+
+                //transform.position = Vector2.MoveTowards(transform.position, destino, velocidad * Time.deltaTime);
             }
 
             if (estado != EstadoEnemigo.PATRULLANDO)//
@@ -90,10 +97,23 @@ public class EnemyChase : MonoBehaviour
 
     private void IrAPuntoSospecha()//
     {
-        transform.position = Vector2.MoveTowards(transform.position, puntoSospecha, velocidad / 1f * Time.deltaTime);
+        Vector2 nuevaPos = Vector2.MoveTowards(rb.position, puntoSospecha, velocidad * Time.deltaTime);
+        if (!HayObstaculoEnCamino(nuevaPos))
+        {
+            rb.MovePosition(nuevaPos);
+        }
+
+        else
+        {
+            VolverAPatrullar(); // usa el que ya tienes
+            return;
+        }
+
+
+        //transform.position = Vector2.MoveTowards(transform.position, puntoSospecha, velocidad / 1f * Time.deltaTime);
         if (Vector2.Distance(transform.position, puntoSospecha) < 0.2f)
         {
-            float distJugador = Vector3.Distance(transform.position, objetivoJugador.position);
+            float distJugador = Vector3.Distance(rb.position, objetivoJugador.position);
             if (distJugador < visionRadio / 2)
             {
                 estado = EstadoEnemigo.PERSIGUIENDO;
@@ -124,8 +144,20 @@ public class EnemyChase : MonoBehaviour
 
     private void Perseguir()//
     {
-        transform.position = Vector2.MoveTowards(transform.position, objetivoJugador.position, velocidad * 2 * Time.deltaTime);
-        if (Vector2.Distance(transform.position, objetivoJugador.position) > visionRadio /* 2 */)
+        Vector2 nuevaPos = Vector2.MoveTowards(rb.position, objetivoJugador.position, velocidad * 2 * Time.deltaTime);
+        if (!HayObstaculoEnCamino(nuevaPos))
+        {
+            rb.MovePosition(nuevaPos);
+        }
+
+        else
+        {
+            VolverAPatrullar(); // usa el que ya tienes
+            return;
+        }
+
+        //transform.position = Vector2.MoveTowards(transform.position, objetivoJugador.position, velocidad * 2 * Time.deltaTime);
+        if (Vector2.Distance(rb.position, objetivoJugador.position) > visionRadio /* 2 */)
         {
             puntoSospecha = objetivoJugador.position;
             estado = EstadoEnemigo.SOSPECHA;
@@ -141,7 +173,8 @@ public class EnemyChase : MonoBehaviour
                 DetectarJugador();
                 break;
             case EstadoEnemigo.SOSPECHA:
-                IrAPuntoSospecha();
+                if (puntoSospecha != Vector3.zero)
+                    IrAPuntoSospecha();
                 break;
             case EstadoEnemigo.PERSIGUIENDO:
                 Perseguir();
@@ -165,9 +198,36 @@ public class EnemyChase : MonoBehaviour
 
     private void VolverAPatrullar()//
     {
-        StopAllCoroutines(); //
-        if (rb != null) rb.velocity = Vector2.zero; //
-        StartCoroutine(EsperarYPatrullar());
+        StopAllCoroutines(); 
+        if (rb != null) rb.velocity = Vector2.zero;
+        puntoSospecha = Vector3.zero; //  Limpia el punto de sospecha
+        estado = EstadoEnemigo.PATRULLANDO; //  Asegura el estado
+
+        StartCoroutine(DevolverYPatrullar());
+    }
+
+    private IEnumerator DevolverYPatrullar()
+    {
+        Vector3 destino = puntosPatrulla[indicePuntoActual].position;
+
+        while (Vector3.Distance(rb.position, destino) > 0.1f)
+        {
+            Vector2 nuevaPos = Vector2.MoveTowards(rb.position, destino, velocidad * Time.deltaTime);
+            if (!HayObstaculoEnCamino(nuevaPos))
+            {
+                rb.MovePosition(nuevaPos);
+            }
+            else
+            {
+                Debug.Log("Obstáculo bloqueando el regreso a patrulla");
+                yield break;
+            }
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(1f);
+        estado = EstadoEnemigo.PATRULLANDO;
+        StartCoroutine(Patrullar());
     }
 
     private IEnumerator EsperarYPatrullar()//
@@ -186,4 +246,13 @@ public class EnemyChase : MonoBehaviour
             StopAllCoroutines();
         }
     }
+    private bool HayObstaculoEnCamino(Vector2 destino)
+    {
+        Vector2 direccion = (destino - rb.position).normalized;
+        float distancia = Vector2.Distance(rb.position, destino);
+
+        RaycastHit2D hit = Physics2D.Raycast(rb.position, direccion, distancia, capaObstaculos);
+        return hit.collider != null;
+    }
+
 }

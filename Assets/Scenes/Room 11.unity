@@ -310,7 +310,7 @@ MonoBehaviour:
   puntosPatrulla:
   - {fileID: 720170506}
   - {fileID: 264984333}
-  velocidad: 9
+  velocidad: 13
 --- !u!95 &8726962
 Animator:
   serializedVersion: 5
@@ -3044,7 +3044,7 @@ MonoBehaviour:
   puntosPatrulla:
   - {fileID: 1813681510}
   - {fileID: 968672874}
-  velocidad: 8
+  velocidad: 10
 --- !u!95 &558604881
 Animator:
   serializedVersion: 5
@@ -4757,7 +4757,7 @@ MonoBehaviour:
   puntosPatrulla:
   - {fileID: 1822180206}
   - {fileID: 857265004}
-  velocidad: 7
+  velocidad: 10
 --- !u!114 &1059101720
 MonoBehaviour:
   m_ObjectHideFlags: 0

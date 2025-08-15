@@ -669,9 +669,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -1.2851589}
+  m_Offset: {x: 2.4385395, y: -1.2851582}
   serializedVersion: 2
-  m_Radius: 1.7851589
+  m_Radius: 4.2236986
 --- !u!4 &281138738
 Transform:
   m_ObjectHideFlags: 0
@@ -1094,7 +1094,7 @@ MonoBehaviour:
   puntosPatrulla:
   - {fileID: 163963700}
   - {fileID: 811440875}
-  velocidad: 3
+  velocidad: 6
   visionRadio: 2.5
   capaJugador:
     serializedVersion: 2
@@ -2694,7 +2694,7 @@ GameObject:
   - component: {fileID: 1059484072}
   - component: {fileID: 1059484071}
   - component: {fileID: 1059484073}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: ROOM 3_9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2762,7 +2762,7 @@ Transform:
   m_GameObject: {fileID: 1059484070}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.9762, y: -0.48, z: 0}
+  m_LocalPosition: {x: -0.65, y: -1.97, z: 0}
   m_LocalScale: {x: 1.2381, y: 1.2381, z: 1.2381}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3822,7 +3822,7 @@ GameObject:
   - component: {fileID: 1465496242}
   - component: {fileID: 1465496241}
   - component: {fileID: 1465496243}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: ROOM 3_10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3890,7 +3890,7 @@ Transform:
   m_GameObject: {fileID: 1465496240}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.09880196, w: 0.9951071}
-  m_LocalPosition: {x: 3.34, y: -0.4, z: 0}
+  m_LocalPosition: {x: -0.1, y: -0.99, z: 0}
   m_LocalScale: {x: 0.8472, y: 0.8472, z: 0.8472}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5123,7 +5123,7 @@ GameObject:
   - component: {fileID: 1691486151}
   - component: {fileID: 1691486150}
   - component: {fileID: 1691486152}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: EXTRAS_6
   m_TagString: Untagged
   m_Icon: {fileID: 0}

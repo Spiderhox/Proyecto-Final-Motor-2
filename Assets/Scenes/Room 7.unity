@@ -1510,9 +1510,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.32443404, y: -0.057931617}
+  m_Offset: {x: 1.354557, y: -0.057931498}
   serializedVersion: 2
-  m_Radius: 1.5234611
+  m_Radius: 2.553584
 --- !u!4 &642576141
 Transform:
   m_ObjectHideFlags: 0
@@ -4290,7 +4290,7 @@ MonoBehaviour:
   puntosPatrulla:
   - {fileID: 979792133}
   - {fileID: 1391963128}
-  velocidad: 3
+  velocidad: 8
   visionRadio: 2
   capaJugador:
     serializedVersion: 2
