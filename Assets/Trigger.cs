@@ -7,12 +7,15 @@ public class PortalTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        Debug.Log("Trigger activado por: " + other.name);
+
+
         if (other.CompareTag("Player"))
         {
-            PortalManager.Instance.RequestSceneChange(
-                portalData,
-                other.gameObject
-            );
+            Debug.Log("Jugador detectado, intentando cambiar de escena...");
+
+            Debug.Log("PortalManager is null: " + (PortalManager.Instance == null));
+            PortalManager.Instance.RequestSceneChange(portalData, TopdownPlayer.instance?.gameObject);
         }
     }
 }

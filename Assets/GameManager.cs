@@ -45,6 +45,12 @@ public class GameManager : MonoBehaviour
 #endif
     }
 
+    private bool playerWasPositionedByPortal = false;
+
+    public void MarkPlayerPositioned()
+    {
+        playerWasPositionedByPortal = true;
+    }
 
     public void RestartGame()
     {
@@ -92,18 +98,16 @@ public class GameManager : MonoBehaviour
             audioSource.PlayOneShot(hojaRecogidaClip);
         }
 
-
     }
-
     private void UpdateUI()
     {
         if (collectedText != null)
             collectedText.text = "HOJAS RECOGIDAS... " + totalCollected;
     }
 
-
     private void Awake()
     {
+        DontDestroyOnLoad(PlayerCharacter);
         Debug.Log("GameManager Awake in scene: " + SceneManager.GetActiveScene().name);
 
 
@@ -114,7 +118,6 @@ public class GameManager : MonoBehaviour
             audioSource = gameObject.AddComponent<AudioSource>();
             audioSource.playOnAwake = false;
 
-
             if (currentCanvas == null)
             {
                 currentCanvas = Instantiate(canvasPrefab);
@@ -123,7 +126,6 @@ public class GameManager : MonoBehaviour
                 Debug.Log("Canvas instantiated in Awake");
 
             }
-
         }
         else
         {
@@ -134,14 +136,12 @@ public class GameManager : MonoBehaviour
     {
         TopdownPlayer.CallPlayerDead += OnJugadorMuerto;
         SceneManager.sceneLoaded += OnSceneLoaded;
-
     }
 
     private void OnDisable()
     {
         TopdownPlayer.CallPlayerDead -= OnJugadorMuerto;
         SceneManager.sceneLoaded -= OnSceneLoaded;
-
     }
 
     public void OnJugadorMuerto()
@@ -167,7 +167,6 @@ public class GameManager : MonoBehaviour
         }
         return null;
     }
-
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         Button victoryRestartButton = FindButtonInCanvas("VictoryRestartButton");
@@ -180,7 +179,7 @@ public class GameManager : MonoBehaviour
 
         else
         {
-            Debug.LogWarning("el boton no esta reina");
+            Debug.LogWarning("game over restart no esta");
         }
 
         // Botón de salir en VictoryPanel
@@ -193,7 +192,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("VictoryExitButton no encontrado");
+            Debug.LogWarning(" victory button exit no encontrado");
         }
 
 
@@ -207,7 +206,7 @@ public class GameManager : MonoBehaviour
 
         else
         {
-            Debug.LogWarning("el boton no esta reina");
+            Debug.LogWarning("game over restart no esta");
         }
 
         // Botón de salir en GameOverPanel
@@ -220,7 +219,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("GameOverExitButton no encontrado");
+            Debug.LogWarning("game over exit no encontrado");
         }
 
 
@@ -252,11 +251,18 @@ public class GameManager : MonoBehaviour
             Debug.LogError("SpawnPoint not found in scene!");
 
         // reposiciona al jugador
-        if (PlayerCharacter != null && spawnPoint != null)
+        /*if (PlayerCharacter != null && spawnPoint != null)
+        {
+            PlayerCharacter.transform.position = spawnPoint.position;
+            PlayerCharacter.SetActive(true);
+        }*/
+
+        if (PlayerCharacter != null && spawnPoint != null && !playerWasPositionedByPortal)
         {
             PlayerCharacter.transform.position = spawnPoint.position;
             PlayerCharacter.SetActive(true);
         }
+        playerWasPositionedByPortal = false; // reset para futuras escenas
 
 
         if (currentCanvas != null)
@@ -272,8 +278,6 @@ public class GameManager : MonoBehaviour
         //que se trajo desde la escena anterior
 
     }
-
-
     public void ShowNotEnoughPages()
     {
         if (notEnoughPagesPanel != null && remainingPagesText != null)
@@ -302,7 +306,6 @@ public class GameManager : MonoBehaviour
         }
 
     }
-
     private IEnumerator HideAfterDelay(GameObject panel, float delay)
     {
         yield return new WaitForSeconds(delay);

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Linq;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,69 +8,167 @@ public class PortalManager : MonoBehaviour
 {
     public static PortalManager Instance;
 
-    private void Awake()
+    /*private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            Debug.Log("PortalManager marcado como DontDestroyOnLoad");
+
         }
+
+        
         else Destroy(gameObject);
+         Debug.Log("PortalManager duplicado, se destruye");
+
+    }*/
+
+    void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Debug.Log("PortalManager duplicado, se destruye");
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
-    public void RequestSceneChange(ScenePortal exitPortal, GameObject player)
-    {
-        string targetScene = exitPortal.GetTargetSceneName();
-        int exitIndex = exitPortal.portalIndex;
-        PortalDirection exitDir = exitPortal.exitDirection;
+    private GameObject cachedPlayer;
+    private ScenePortal currentPortal;
 
-        StartCoroutine(ChangeSceneRoutine(targetScene, exitIndex, exitDir, player));
+    public void RequestSceneChange(ScenePortal portal, GameObject player)
+    {
+        if (portal == null)
+        {
+            Debug.LogError("El portal es null.");
+            return;
+        }
+
+        if (player == null || player.Equals(null))
+        {
+            Debug.LogError("El jugador recibido es null o ha sido destruido.");
+            return;
+        }
+
+        cachedPlayer = player;
+        currentPortal = portal;
+        StartCoroutine(ChangeSceneRoutine(
+        portal.GetTargetSceneName(),
+        portal.portalIndex,
+        portal.exitDirection,
+        TopdownPlayer.instance?.gameObject
+        ));
+
     }
 
     IEnumerator ChangeSceneRoutine(string nextScene, int exitIndex, PortalDirection exitDir, GameObject player)
     {
+
+        string sceneName = currentPortal.GetTargetSceneName();
+
         string lastScene = SceneManager.GetActiveScene().name;
 
-        var load = SceneManager.LoadSceneAsync(nextScene, LoadSceneMode.Additive);
-        yield return load;
+        if (string.IsNullOrEmpty(sceneName))
+        {
+            Debug.LogError("Nombre de escena inválido.");
+            yield break;
+        }
 
-        // Wait until the scene is fully loaded
-        Scene newLoadedScene = SceneManager.GetSceneByName(nextScene);
-        Debug.Log("Loaded scene: " + newLoadedScene.name);
-        Debug.Log("Is loaded: " + newLoadedScene.isLoaded);
-        Debug.Log("Is valid: " + newLoadedScene.IsValid());
+        // Validar que el spawnPoint aún existe
+        if (currentPortal.spawnPoint == null || currentPortal.spawnPoint.Equals(null))
+        {
+            Debug.LogError("El spawnPoint del portal actual ha sido destruido o es null.");
+            yield break;
+        }
 
-        bool success = SceneManager.SetActiveScene(newLoadedScene);
-        Debug.Log("SetActiveScene success: " + success);
-        while (!newLoadedScene.isLoaded)
-            yield return null;
+        yield return SceneManager.LoadSceneAsync(sceneName);
+        yield return null;
 
-        // Now it's safe to set it active
+        Scene newLoadedScene = SceneManager.GetSceneByName(sceneName);
+        if (!newLoadedScene.IsValid() || !newLoadedScene.isLoaded)
+        {
+            Debug.LogError($"La escena '{sceneName}' no se cargó correctamente.");
+            yield break;
+        } 
+        
+        TopdownPlayer.instance.transform.position = currentPortal.spawnPoint.position;
+
         SceneManager.SetActiveScene(newLoadedScene);
 
-        // Find the matching portal
-        var portals = GameObject.FindObjectsOfType<ScenePortal>();
-        var targetPortal = portals.FirstOrDefault(p =>
-            p.entryDirection == OppositeDirection(exitDir) &&
-            p.portalIndex == exitIndex &&
-            p.gameObject.scene == newLoadedScene
-        );
+        
+        if (cachedPlayer == null || player.Equals(null))
 
-        if (targetPortal != null)
         {
-            player.transform.position = targetPortal.spawnPoint.position;
+            Debug.LogError("El jugador es null justo antes de moverlo a la nueva escena.");
+            Debug.Log("Jugador cacheado: " + cachedPlayer.name);
+            yield break;
+        }
 
-            // Inform GameManager about the new spawn point
-            GameManager.Instance.UpdateSpawnPoint(targetPortal.spawnPoint);
+        if (currentPortal == null)
+        {
+            Debug.Log("el portal actual no existe");
         }
 
 
-        if (targetPortal != null)
-            player.transform.position = targetPortal.spawnPoint.position;
+        SceneManager.MoveGameObjectToScene(cachedPlayer, newLoadedScene);
+        Debug.Log("Jugador movido correctamente a: " + sceneName);
 
-        var unload = SceneManager.UnloadSceneAsync(lastScene);
-        yield return unload;
+        // Esperar
+        int waitFrames = 0;
+        while (GameObject.FindObjectsOfType<ScenePortal>().Length == 0 && waitFrames < 300)
+        {
+            yield return null;
+            waitFrames++;
+        }
 
+        if (waitFrames >= 300)
+        {
+            Debug.LogError("Timeout esperando portales en la nueva escena.");
+            yield break;
+        }
+
+        // Buscar el portal destino
+        var portals = GameObject.FindObjectsOfType<ScenePortal>();
+        var targetPortal = portals.FirstOrDefault(p =>
+            p.entryDirection == OppositeDirection(currentPortal.exitDirection) &&
+            p.portalIndex == currentPortal.portalIndex &&
+            p.gameObject.scene == newLoadedScene
+        );
+
+        if (targetPortal == null)
+        {
+            Debug.LogError("No se encontró el portal destino en la nueva escena.");
+            yield break;
+        }
+
+        if (targetPortal.spawnPoint == null)
+        {
+            Debug.LogError("El portal destino no tiene asignado un spawnPoint.");
+            yield break;
+        }
+
+        if (cachedPlayer == null)
+            Debug.LogError("cachedPlayer es null");
+
+        else if (cachedPlayer.scene.name == null)
+            Debug.LogError("cachedPlayer apunta a un objeto destruido");
+
+        else
+            Debug.Log("cachedPlayer está vivo en escena: " + cachedPlayer.scene.name);
+
+        // Teletransportar jugador
+        cachedPlayer.transform.position = targetPortal.spawnPoint.position;
+
+        // Decirle al GM
+        GameManager.Instance.UpdateSpawnPoint(targetPortal.spawnPoint);
+        GameManager.Instance.MarkPlayerPositioned();
+
+        Debug.Log($"Cambio de escena completado. Escena activa: {SceneManager.GetActiveScene().name}");
+        Debug.Log($"La escena anterior '{lastScene}' fue descargada automáticamente al cargar '{sceneName}'.");
     }
 
     PortalDirection OppositeDirection(PortalDirection dir)

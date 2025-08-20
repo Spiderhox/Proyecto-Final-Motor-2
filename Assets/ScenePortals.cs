@@ -18,7 +18,7 @@ public class ScenePortal : MonoBehaviour
     {
         if (sceneList == null || sceneList.scenes == null || sceneList.scenes.Count <= targetSceneIndex)
             return null;
-        return sceneList.scenes[targetSceneIndex].sceneAsset.name;
+        return sceneList.scenes[targetSceneIndex].sceneName; ;
     }
 }
 

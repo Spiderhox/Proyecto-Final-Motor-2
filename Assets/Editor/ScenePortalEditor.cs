@@ -19,7 +19,7 @@ public class ScenePortalEditor : Editor
         }
         else
         {
-            EditorGUILayout.HelpBox("Asigne una SceneList y al menos una escena.", MessageType.Warning);
+            EditorGUILayout.HelpBox("Asigne una SceneList", MessageType.Warning);
         }
     }
 }

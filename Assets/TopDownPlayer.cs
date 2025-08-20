@@ -9,6 +9,7 @@ public class TopdownPlayer : MonoBehaviour
     private Rigidbody2D rb;
     private Vector2 input;
     public static TopdownPlayer instance;
+
     //public static event Action OnJugadorMuerto;
     public static Action CallPlayerDead;
     private Animator animator;
@@ -20,12 +21,21 @@ public class TopdownPlayer : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
+            Debug.Log("Jugador persistente creado.");
+
         }
 
-        else
+        else if (instance != this)
         {
-            Destroy(this.gameObject);
+            Debug.LogWarning("Jugador duplicado detectado. Se destruye: " + gameObject.name);
+            Destroy(gameObject);
         }
+
+        /*else
+        {
+
+            Destroy(this.gameObject);
+        }*/
     }
 
     void Start()

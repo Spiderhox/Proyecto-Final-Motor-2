@@ -39,6 +39,7 @@ public class EnemyChase : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();//
         objetivoJugador = GameObject.FindGameObjectWithTag("Player").transform;//
+        StartCoroutine(EsperarJugador());
         StartCoroutine(Patrullar());
     }
 
@@ -73,6 +74,17 @@ public class EnemyChase : MonoBehaviour
 
             yield return new WaitForSeconds(1f);
         }
+    }
+
+    private IEnumerator EsperarJugador()
+    {
+        while (GameObject.FindGameObjectWithTag("Player") == null)
+        {
+            yield return null;
+        }
+
+        objetivoJugador = GameObject.FindGameObjectWithTag("Player").transform;
+        StartCoroutine(Patrullar());
     }
 
     private void DetectarJugador()//
