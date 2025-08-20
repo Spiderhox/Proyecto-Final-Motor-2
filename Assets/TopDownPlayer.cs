@@ -25,17 +25,12 @@ public class TopdownPlayer : MonoBehaviour
 
         }
 
-        else if (instance != this)
+        else
         {
             Debug.LogWarning("Jugador duplicado detectado. Se destruye: " + gameObject.name);
             Destroy(gameObject);
         }
 
-        /*else
-        {
-
-            Destroy(this.gameObject);
-        }*/
     }
 
     void Start()

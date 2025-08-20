@@ -9,13 +9,12 @@ public class PortalTrigger : MonoBehaviour
     {
         Debug.Log("Trigger activado por: " + other.name);
 
-
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && PortalManager.IsBusy == false)
         {
             Debug.Log("Jugador detectado, intentando cambiar de escena...");
 
             Debug.Log("PortalManager is null: " + (PortalManager.Instance == null));
-            PortalManager.Instance.RequestSceneChange(portalData, TopdownPlayer.instance?.gameObject);
+            PortalManager.Instance.RequestSceneChange(portalData, TopdownPlayer.instance.gameObject);
         }
     }
 }

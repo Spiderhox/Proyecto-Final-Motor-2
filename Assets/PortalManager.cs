@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 public class PortalManager : MonoBehaviour
 {
     public static PortalManager Instance;
-
     /*private void Awake()
     {
         if (Instance == null)
@@ -23,6 +22,8 @@ public class PortalManager : MonoBehaviour
          Debug.Log("PortalManager duplicado, se destruye");
 
     }*/
+
+    public static bool IsBusy;
 
     void Awake()
     {
@@ -56,18 +57,17 @@ public class PortalManager : MonoBehaviour
 
         cachedPlayer = player;
         currentPortal = portal;
+        IsBusy = true;
         StartCoroutine(ChangeSceneRoutine(
         portal.GetTargetSceneName(),
         portal.portalIndex,
-        portal.exitDirection,
-        TopdownPlayer.instance?.gameObject
+        portal.exitDirection
         ));
 
     }
 
-    IEnumerator ChangeSceneRoutine(string nextScene, int exitIndex, PortalDirection exitDir, GameObject player)
+    IEnumerator ChangeSceneRoutine(string nextScene, int exitIndex, PortalDirection exitDir)
     {
-
         string sceneName = currentPortal.GetTargetSceneName();
 
         string lastScene = SceneManager.GetActiveScene().name;
@@ -95,12 +95,11 @@ public class PortalManager : MonoBehaviour
             yield break;
         } 
         
-        TopdownPlayer.instance.transform.position = currentPortal.spawnPoint.position;
+        //TopdownPlayer.instance.transform.position = currentPortal.spawnPoint.position;
 
         SceneManager.SetActiveScene(newLoadedScene);
 
-        
-        if (cachedPlayer == null || player.Equals(null))
+        if (cachedPlayer == null)
 
         {
             Debug.LogError("El jugador es null justo antes de moverlo a la nueva escena.");
@@ -113,8 +112,7 @@ public class PortalManager : MonoBehaviour
             Debug.Log("el portal actual no existe");
         }
 
-
-        SceneManager.MoveGameObjectToScene(cachedPlayer, newLoadedScene);
+        //SceneManager.MoveGameObjectToScene(cachedPlayer, newLoadedScene);
         Debug.Log("Jugador movido correctamente a: " + sceneName);
 
         // Esperar
@@ -169,6 +167,8 @@ public class PortalManager : MonoBehaviour
 
         Debug.Log($"Cambio de escena completado. Escena activa: {SceneManager.GetActiveScene().name}");
         Debug.Log($"La escena anterior '{lastScene}' fue descargada automáticamente al cargar '{sceneName}'.");
+
+        IsBusy = false;
     }
 
     PortalDirection OppositeDirection(PortalDirection dir)
